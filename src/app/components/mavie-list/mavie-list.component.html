@@ -1,11 +1,13 @@
-<section id="main" class="container">
+<section id="main" class="container"  >
     <div class="row">
-      <div class="col-3 col-12-narrower">
+        <button (click)="changeToFav(true)">true</button>
+        <button (click)="changeToFav(false)">false</button>
+      <div class="col-3 col-12-narrower" *ngFor="let movie of movies | async ">
 
-        <section class="box special">
-          <span class="image featured"><img src="../assets/images/pic02.jpg" alt="" /></span>
-          <h3>Sed lorem adipiscing</h3>    
-          <i class="fa fa-heart"></i>      
+        <section class="box special" (click)="goToDetails(movie.id)">
+          <span class="image featured"><img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" /></span>
+          <h3>{{movie.title}}</h3>    
+          <i class="fa fa-heart" [class.red]="movie.favorite == true" (click)="favItem($event,movie,movie.favorite)"></i>      
         </section>
       </div>    
     </div>

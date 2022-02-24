@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable,EventEmitter } from '@angular/core';
+
 
 @Injectable({
   providedIn: 'root'
@@ -6,4 +7,6 @@ import { Injectable } from '@angular/core';
 export class SharedService {
 
   constructor() { }
+
+  allData = new EventEmitter();
 }
