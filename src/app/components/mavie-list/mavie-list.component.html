@@ -1,12 +1,32 @@
+
+    <app-banenr></app-banenr>
 <section id="main" class="container"  >
     <div class="row">
-        <button (click)="changeToFav(true)">true</button>
-        <button (click)="changeToFav(false)">false</button>
-      <div class="col-3 col-12-narrower" *ngFor="let movie of movies | async ">
+      <div class="selector_wrap">
+        <div class="selector">
+          
+          <div class="anchor "[class.selected]="!selected">
+           <a (click)="changeToFav(false)" class="selectList" data-panel="popular_scroller" data-group="on-tv">All Movies </a>
+            <div class="background hide"></div>
+          </div>
+          <div class="anchor" [class.selected]="selected">
+         <a  (click)="changeToFav(true)" class="selectList" data-panel="popular_scroller" data-group="streaming">My Favorite Movies </a>
+           
+          </div>
+        
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 col-12-narrower" infinite-scroll
+      [infiniteScrollDistance]="scrollDistance"   
+      [infiniteScrollThrottle]="throttle"
+      (scrolled)="onScrollDown($event)"
+    *ngFor="let movie of movies | async ">
 
-        <section class="box special" (click)="goToDetails(movie.id)">
-          <span class="image featured"><img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" /></span>
-          <h3>{{movie.title}}</h3>    
+        <section *ngIf="movie" class="box special" (click)="goToDetails(movie)">
+          <span class="image featured"><img src="https://image.tmdb.org/t/p/original/{{movie?.poster_path}}" /></span>
+          <h3>{{movie?.title}}</h3>    
           <i class="fa fa-heart" [class.red]="movie.favorite == true" (click)="favItem($event,movie,movie.favorite)"></i>      
         </section>
       </div>    

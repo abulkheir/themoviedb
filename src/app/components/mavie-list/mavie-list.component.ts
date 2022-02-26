@@ -8,15 +8,21 @@ import { Movie } from '../../models/movie.model'
 import { AppState } from '../../app.state';
 import {addMovie, editMovie} from '../../actions/movie.actions'
 import { isMovieFavorite } from 'src/app/selectors/movie.selector';
+import { share, finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-mavie-list',
   templateUrl: './mavie-list.component.html',
   styleUrls: ['./mavie-list.component.css']
 })
 export class MavieListComponent implements OnInit {
-
+  private currentPage = 1;
 movies: Observable<Movie[]> =  this.store.pipe(select(isMovieFavorite(false)));
 moviesObj:Movie[] = [];
+sum = 100;
+distance = 2000;
+selected:boolean = false;
+throttle = 0;
+scrollDistance = 1;
   constructor(private movieList :MovieListService,
     private router:Router,
     private shredService: SharedService,
@@ -24,23 +30,32 @@ moviesObj:Movie[] = [];
     
      }
 changeToFav(val:boolean){
+  this.selected = !this.selected
   this.movies =  this.store.pipe(select(isMovieFavorite(val)));
 }
 
-getMovieList(){
-  this.movieList.getMovieList().subscribe((res:any)=>{ 
-    for(let i=0;i < res.results.length;i++){
-      this.moviesObj.push({
+getMovieList(currentPage:number){
+  this.movieList.getMovieList(currentPage).subscribe((res:any)=>{ 
+    
+if(currentPage == res.total_pages)
+return
+
+  let arr:Movie[] = [];
+    for(let i=0;i <  res.results.length;i++){
+      arr.push({
         poster_path: res.results[i].poster_path,
         title: res.results[i].title,
         id:res.results[i].id,
         favorite:false
       })
     }
+
   
-    console.log('movieList',this.movies);
+    this.moviesObj.length > 0 ? this.moviesObj = this.moviesObj.concat(this.moviesObj) : this.moviesObj .push(...arr) 
+
+
   },()=>{},()=>{
-    this.store.dispatch( addMovie({allMovies:this.moviesObj as Movie[]}))
+   this.store.dispatch( addMovie({allMovies:this.moviesObj as Movie[]}))
   })
 }
 data:any;
@@ -54,18 +69,26 @@ const moviexx:Movie = {
   id:movie.id,
   favorite: !favVal
 };
-debugger;
-   this.store.dispatch(editMovie({movie:moviexx }))
-
- 
-  
+   this.store.dispatch(editMovie({movie:moviexx }))  
 }
-  goToDetails(id:number){
-    this.router.navigate(['movie-details',id])
+  goToDetails(movie:Movie){
+    this.shredService.allData.emit(movie)
+    this.router.navigate(['movie-details',movie.id])
   }
+  onScrollDown(ev:any) {
+  
+    this.sum += 20;
+  
+    if(ev.currentScrollPosition > this.distance){
+   
+      this.distance += this.distance;
+      this.currentPage ++
+      this.getMovieList(this.currentPage)
+    }
 
+  }
   ngOnInit(): void {
-    this.getMovieList()
+    this.getMovieList(this.currentPage)
   }
 
 }

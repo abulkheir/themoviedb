@@ -1,0 +1,69 @@
+.banner {
+ 
+    background-color: #666;
+    color: #fff;
+   display: flex;
+    margin-top: 25px;
+    background-size: cover;
+   padding: 0;
+   max-width: 100%;
+}
+.rowGb{
+    padding: 12em 5em 20em 5em;  
+    margin: 0;
+    background: linear-gradient(to right, rgba(31.5, 10.5, 10.5, 1) 150px, rgba(31.5, 10.5, 10.5, 0.84) 100%); 
+}
+.poster{
+    max-width: 100%;
+}
+h1{
+    font-size: 3em;
+    color: #fff;
+}
+.banner h2 {   
+    line-height: 1em;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+    color: #fff;
+    font-size: 2em;
+}
+
+.banner p {
+    font-size: 1em;
+    margin-bottom: 1.75em;
+}
+.informations li{
+    
+    list-style: disc;
+      list-style-type: disc;
+    margin: 0 5px;
+      margin-right: 5px;   
+    float: left;
+    margin-right: 19px;
+    text-indent: -5px;
+}
+.informations li:last-child{
+    list-style: none;
+    list-style-type: none;
+    text-indent: none;
+}
+ul{
+    clear: both;
+    display: flex;
+    margin-bottom: 20px;
+}
+.Reviews{
+    color: rgb(3, 37, 65);
+    margin: 50px 0;
+}
+.review_wrap{
+    border: 1px solid #ddd;
+    margin: 15px;
+    padding: 20px;
+    border-radius:5px ;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+}
+.col-md-11 h2{
+    margin-bottom: 0;
+}
+

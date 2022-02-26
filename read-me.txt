@@ -1,3 +1,6 @@
 angualar material
+MatDialogModule
 
-npm i ngx-charts
+npm i ngx-star-rating
+
+npm install ngx-pagination
