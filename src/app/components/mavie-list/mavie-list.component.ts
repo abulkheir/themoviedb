@@ -44,11 +44,11 @@ return
     
 
 this.totalPages = res.total_pages
-  let arr:Movie[] = [];
-  //debugger
-  debugger;
-   localStorage.getItem('favArr')? this.favArr =(JSON.parse(JSON.stringify(localStorage.getItem('favArr'))))  :this.favArr  =  []
-    for(let i=0;i <  res.results.length;i++){
+  let arr:Movie[] = []; 
+//JSON.stringify(localStorage.getItem('favArr'))
+   
+console.log("favArr",this.favArr)
+   for(let i=0;i <  res.results.length;i++){
       arr.push({
         poster_path: res.results[i].poster_path,
         title: res.results[i].title,
@@ -63,7 +63,8 @@ this.totalPages = res.total_pages
       })
     }
     arr.forEach(element => {
-     
+
+      
      this.favArr.includes(element.id)? element.favorite = true : element.favorite = false
     });
     this.moviesObj.length > 0 ? this.moviesObj = this.moviesObj.concat(this.moviesObj) : this.moviesObj .push(...arr);
@@ -73,13 +74,17 @@ this.totalPages = res.total_pages
 }
 data:any;
 favItem(event:any,movie:Movie){
+  debugger;
   event.stopPropagation();
   if(!movie.favorite){
     this.favArr.push(movie.id);
-    localStorage.setItem('favArr',this.favArr+"")
+    console.log('favArr',this.favArr)
+    localStorage.setItem('favArr',this.favArr.join())
   }else{
-    let index =   this.favArr.findIndex(x=> x == movie.id);
+   // this.favArr.split()
+    let index = this.favArr.findIndex(x=> x == movie.id);
     this.favArr.splice(index,1);
+    console.log('favArr',this.favArr)
     localStorage.setItem('favArr',this.favArr.join())
   }
  
@@ -113,6 +118,7 @@ const movieItemObj:Movie = {
 
   }
   ngOnInit(): void {
+    localStorage.getItem('favArr')? this.favArr = localStorage.getItem("favArr")?.split(",").map(Number)!  :this.favArr  =  []
     this.getMovieList(this.currentPage)
   }
 

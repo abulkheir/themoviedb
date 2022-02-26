@@ -33,16 +33,13 @@ export class MavieDetailComponent implements OnInit {
     public dialog: MatDialog,   
     
     ) {
-      window.onpopstate = function (e) {
-        alert('back button is disaples for this page please use the provided back arrow');  
-        window.history.forward();
-       }
+     
      }
 
 
   ngOnInit(): void {    
     this.getSessionID();
-    localStorage.getItem('favArr')? this.favArr.push(JSON.parse(JSON.stringify(localStorage.getItem('favArr'))))  :this.favArr  =  []
+    localStorage.getItem('favArr')? this.favArr = localStorage.getItem("favArr")?.split(",").map(num => parseInt(num, 10))!  :this.favArr  =  []
   
     this.sharedService.allData.subscribe((data)=> {
 
@@ -91,12 +88,12 @@ onScrollDown(ev:any) {
 favoriteMovie(fav:boolean,ID:number){
   if(!fav){
     this.favArr.push(ID);
-    localStorage.setItem('favArr',this.favArr+"");
+    localStorage.setItem('favArr',this.favArr.join());
    this.favorite = true
   }else{
     let index =   this.favArr.findIndex(x=> x == ID);
     this.favArr.splice(index,1);
-    localStorage.setItem('favArr',this.favArr+"");
+    localStorage.setItem('favArr',this.favArr.join());
    this.favorite = false
   }
 }
