@@ -14,3 +14,14 @@ export const isMovieFavorite =(isFav:boolean)=>
         return movie.filter(x => x.favorite == isFav)
     }
 )
+export const mySpacificMovieDetail =(ID:number)=>
+ createSelector(
+    movieSelector,
+    (movie:Movie[]) => {
+    if(ID == -1){
+        return []
+    }
+        
+        return movie.filter(x => x.id == ID)
+    }
+)

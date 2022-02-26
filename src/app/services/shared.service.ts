@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable,EventEmitter } from '@angular/core';
-import { map } from 'rxjs/operators'
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class SharedService {
 
   constructor(private http: HttpClient) { }
 
-  allData = new EventEmitter();
+  allData = new BehaviorSubject({});
 
   favoriteMovie(session_id:string){
     let headers = {

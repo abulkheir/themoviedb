@@ -1,31 +1,27 @@
-<section class="banner" *ngIf="movie?.backdrop_path" style="background-image: url(https://image.tmdb.org/t/p/original/{{movie?.backdrop_path}});">
-
+<section class="banner"  style="background-image: url(https://image.tmdb.org/t/p/original/{{movie?.backdrop_path}});">
+<span class="back" (click)="goback()"><i class="fa fa-arrow-left" aria-hidden="true"></i></span>
   <div class="row rowGb">
     <div class="col-md-3">
-      <img class="poster" src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" />
+      <img class="poster" src="https://image.tmdb.org/t/p/original/{{movie.poster_path}} " />
     </div>
     <div class="col-md-9">
-      <h1>{{movie.title}}</h1>
+      <h1 style="padding-top: 1em">{{movie.title}}</h1>
    
-        <ul class="informations">
+        <ul class="informations" style="margin-top: 1em;">
           <li>{{movie.release_date}}</li>
-          <li>{{movie.popularity}}</li>         
+          <li style="list-style: none;"><i class="fa fa-users" aria-hidden="true"></i> {{movie.popularity}}</li>         
           <li>{{movie.vote_average}}</li>
-          <li >
-            <span *ngFor="let g of movie.genres"> {{g.name}} ,</span>
-           </li>
+       
            <li style="list-style: none;">
-            <i class="fa fa-heart"></i>
+            <i class="fa fa-heart"  [class.red]="favorite" (click)="favoriteMovie(favorite,movie.id)"></i>
            </li>
            <li>
             <i class="fa fa-star"  [matMenuTriggerFor]="menu" #menuTrigger></i> {{movie?.vote_average}}
           </li>
         </ul>
       
-      <h2>Overview</h2>
-      <p>{{movie.overview}}</p>
-      <h2>Popularity</h2>
-      <p>{{movie.popularity}}</p>
+      <h2 style="padding-top: 1em">Overview</h2>
+      <p>{{movie.overview}}</p>    
     </div>
   </div>
    

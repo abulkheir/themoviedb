@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+import {  Router } from '@angular/router';
 import { MovieDetailsService } from 'src/app/services/movie-details.service';
 import { SharedService } from 'src/app/services/shared.service';
 import {MatDialog} from '@angular/material/dialog';
 import { MovieReviews } from 'src/app/models/movieReviews.model';
+import { Movie } from 'src/app/models/movie.model';
+
+
 
 @Component({
 
@@ -18,40 +21,48 @@ export class MavieDetailComponent implements OnInit {
   scrollDistance = 1;
   distance = 2000;
   throttle = 0;
+  favArr:number[]=[];
+  favorite:boolean = false;
   totalPages:number = 0;
   private currentPage = 1;
+  movie:any;
   movieReviews:MovieReviews[]=[];
   constructor(private sharedService : SharedService,
     private MovieDetailsService :MovieDetailsService,
-    private route :ActivatedRoute,
-    public dialog: MatDialog,
-   
-    ) { }
- movie:any;
+    private router :Router,
+    public dialog: MatDialog,   
+    
+    ) {
+      window.onpopstate = function (e) {
+        alert('back button is disaples for this page please use the provided back arrow');  
+        window.history.forward();
+       }
+     }
+
 
   ngOnInit(): void {    
     this.getSessionID();
-   
-    this.route.params.subscribe(params => {
-     this.movie_id = params['id'];
-      this.getDetails(params['id']);    
-    }); 
+    localStorage.getItem('favArr')? this.favArr.push(JSON.parse(JSON.stringify(localStorage.getItem('favArr'))))  :this.favArr  =  []
+  
+    this.sharedService.allData.subscribe((data)=> {
+
+      let MovieData:any = localStorage.getItem('MovieData')
+     Object.keys(data).length != 0? this.movie = data :this.movie = JSON.parse(MovieData);
+     
+      this.movie_id = this.movie.id
+     this.favArr.includes(this.movie_id)? this.favorite = true: this.favorite = false
+    }) 
     this.getMovieReview(this.currentPage);
   }
 
 
-getDetails(ID:string){
-this.MovieDetailsService.getMovieDetails(ID).subscribe((data:any)=>{
-console.log('data',data);
-this.movie = data
-})
-}
+
 getMovieReview(currentPage:number){
   if(currentPage == this.totalPages)
   return
 
   this.MovieDetailsService.getMovieReviews(this.movie_id,currentPage).subscribe((data:any)=>{
-    console.log('data',data);
+  
     let arr = [];
     arr = data.results;
     this.totalPages = data.total_pages; 
@@ -65,6 +76,9 @@ getSessionID(){
   
   })
 }
+goback(){
+  this.router.navigate(['all-movies'])
+}
 onScrollDown(ev:any) {
   if(ev.currentScrollPosition > this.distance){
  
@@ -74,18 +88,24 @@ onScrollDown(ev:any) {
   }
 
 }
-favoriteMovie(ID:string){
-
-  this.sharedService.favoriteMovie(ID).subscribe((data:any)=>{
-   
-   })
+favoriteMovie(fav:boolean,ID:number){
+  if(!fav){
+    this.favArr.push(ID);
+    localStorage.setItem('favArr',this.favArr+"");
+   this.favorite = true
+  }else{
+    let index =   this.favArr.findIndex(x=> x == ID);
+    this.favArr.splice(index,1);
+    localStorage.setItem('favArr',this.favArr+"");
+   this.favorite = false
+  }
 }
 
 
 
 
 rateMovie(){
-console.log('rating',this.rating)
+
 
   this.MovieDetailsService.rateMovie(this.movie_id,this.sessionID,this.rating).subscribe((data:any)=>{
     

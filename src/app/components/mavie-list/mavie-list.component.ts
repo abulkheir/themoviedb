@@ -8,7 +8,7 @@ import { Movie } from '../../models/movie.model'
 import { AppState } from '../../app.state';
 import {addMovie, editMovie} from '../../actions/movie.actions'
 import { isMovieFavorite } from 'src/app/selectors/movie.selector';
-import { share, finalize } from 'rxjs/operators';
+import { findIndex } from 'rxjs/operators';
 @Component({
   selector: 'app-mavie-list',
   templateUrl: './mavie-list.component.html',
@@ -16,6 +16,7 @@ import { share, finalize } from 'rxjs/operators';
 })
 export class MavieListComponent implements OnInit {
   private currentPage = 1;
+  favArr:number[]=[];
 movies: Observable<Movie[]> =  this.store.pipe(select(isMovieFavorite(false)));
 moviesObj:Movie[] = [];
 distance = 2000;
@@ -44,38 +45,62 @@ return
 
 this.totalPages = res.total_pages
   let arr:Movie[] = [];
+  //debugger
+  debugger;
+   localStorage.getItem('favArr')? this.favArr =(JSON.parse(JSON.stringify(localStorage.getItem('favArr'))))  :this.favArr  =  []
     for(let i=0;i <  res.results.length;i++){
       arr.push({
         poster_path: res.results[i].poster_path,
         title: res.results[i].title,
         id:res.results[i].id,
-        favorite:false
+        favorite:false,
+        release_date:res.results[i].release_date,
+        backdrop_path:res.results[i].backdrop_path,
+        popularity:res.results[i].popularity,
+        vote_average:res.results[i].vote_average,
+       
+        overview:res.results[i].overview
       })
     }
-
-  
-    this.moviesObj.length > 0 ? this.moviesObj = this.moviesObj.concat(this.moviesObj) : this.moviesObj .push(...arr) 
-
-
+    arr.forEach(element => {
+     
+     this.favArr.includes(element.id)? element.favorite = true : element.favorite = false
+    });
+    this.moviesObj.length > 0 ? this.moviesObj = this.moviesObj.concat(this.moviesObj) : this.moviesObj .push(...arr);
   },()=>{},()=>{
    this.store.dispatch( addMovie({allMovies:this.moviesObj as Movie[]}))
   })
 }
 data:any;
-favItem(event:any,movie:Movie,favVal:boolean){
+favItem(event:any,movie:Movie){
   event.stopPropagation();
-
-  
-const moviexx:Movie = {
+  if(!movie.favorite){
+    this.favArr.push(movie.id);
+    localStorage.setItem('favArr',this.favArr+"")
+  }else{
+    let index =   this.favArr.findIndex(x=> x == movie.id);
+    this.favArr.splice(index,1);
+    localStorage.setItem('favArr',this.favArr.join())
+  }
+ 
+const movieItemObj:Movie = {
   poster_path: movie.poster_path,
   title: movie.title,
   id:movie.id,
-  favorite: !favVal
+  favorite: !movie.favorite,
+  release_date:movie.release_date,
+  backdrop_path:movie.backdrop_path,
+  popularity:movie.popularity,
+  vote_average:movie.vote_average,
+
+  overview:movie.overview
 };
-   this.store.dispatch(editMovie({movie:moviexx }))  
+   this.store.dispatch(editMovie({movie:movieItemObj }))  
 }
   goToDetails(movie:Movie){
-    this.shredService.allData.emit(movie)
+    localStorage.setItem('MovieData',JSON.stringify(movie));
+    this.shredService.allData.next(movie);
+    console.log('movie details obj',movie)
     this.router.navigate(['movie-details',movie.id])
   }
   onScrollDown(ev:any) {  

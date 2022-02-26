@@ -8,11 +8,7 @@ export class MovieDetailsService {
 
   constructor(private http: HttpClient ) { }
 
-  getMovieDetails(ID:string){
-    return this.http.get(`     
-    https://api.themoviedb.org/3/movie/${ID}?api_key=40a16c88cd9a1f02de6a0e045c5b1f13`   
-      )        
-  }
+
   rateMovie(movie_id:number,s_ID:string,rating:number){
     let headers = {
       "Content-Type" : "application/json;charset=utf-8"

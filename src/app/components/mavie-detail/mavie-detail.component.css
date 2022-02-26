@@ -7,11 +7,15 @@
     background-size: cover;
    padding: 0;
    max-width: 100%;
+   position: relative;
+}
+.red{
+    color: red;
 }
 .rowGb{
     padding: 12em 5em 20em 5em;  
     margin: 0;
-    background: linear-gradient(to right, rgba(31.5, 10.5, 10.5, 1) 150px, rgba(31.5, 10.5, 10.5, 0.84) 100%); 
+    background: linear-gradient(to right, rgba(3,37,65, 1) 150px, rgba(3,37,65, 0.78) 100%);
 }
 .poster{
     max-width: 100%;
@@ -65,5 +69,12 @@ ul{
 }
 .col-md-11 h2{
     margin-bottom: 0;
+}
+.back{
+    font-size: 25px;
+position: absolute;
+left: 10px;
+top: 20px;
+cursor: pointer;
 }
 
