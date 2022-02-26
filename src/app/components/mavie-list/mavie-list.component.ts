@@ -18,8 +18,8 @@ export class MavieListComponent implements OnInit {
   private currentPage = 1;
 movies: Observable<Movie[]> =  this.store.pipe(select(isMovieFavorite(false)));
 moviesObj:Movie[] = [];
-sum = 100;
 distance = 2000;
+totalPages:number = 0;
 selected:boolean = false;
 throttle = 0;
 scrollDistance = 1;
@@ -35,11 +35,14 @@ changeToFav(val:boolean){
 }
 
 getMovieList(currentPage:number){
-  this.movieList.getMovieList(currentPage).subscribe((res:any)=>{ 
-    
-if(currentPage == res.total_pages)
+
+  if(currentPage == this.totalPages)
 return
 
+  this.movieList.getMovieList(currentPage).subscribe((res:any)=>{ 
+    
+
+this.totalPages = res.total_pages
   let arr:Movie[] = [];
     for(let i=0;i <  res.results.length;i++){
       arr.push({
@@ -75,10 +78,7 @@ const moviexx:Movie = {
     this.shredService.allData.emit(movie)
     this.router.navigate(['movie-details',movie.id])
   }
-  onScrollDown(ev:any) {
-  
-    this.sum += 20;
-  
+  onScrollDown(ev:any) {  
     if(ev.currentScrollPosition > this.distance){
    
       this.distance += this.distance;

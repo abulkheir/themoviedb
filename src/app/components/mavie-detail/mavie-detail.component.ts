@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MovieDetailsService } from 'src/app/services/movie-details.service';
 import { SharedService } from 'src/app/services/shared.service';
 import {MatDialog} from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MovieReviews } from 'src/app/models/movieReviews.model';
+
 @Component({
 
   selector: 'app-mavie-detail',
@@ -14,7 +15,12 @@ export class MavieDetailComponent implements OnInit {
   sessionID:string = '';
   rating:number = 0 ;
   movie_id:number = 0 ;
-  movieReviews:any;
+  scrollDistance = 1;
+  distance = 2000;
+  throttle = 0;
+  totalPages:number = 0;
+  private currentPage = 1;
+  movieReviews:MovieReviews[]=[];
   constructor(private sharedService : SharedService,
     private MovieDetailsService :MovieDetailsService,
     private route :ActivatedRoute,
@@ -25,11 +31,12 @@ export class MavieDetailComponent implements OnInit {
 
   ngOnInit(): void {    
     this.getSessionID();
-    this.getMovieReview();
+   
     this.route.params.subscribe(params => {
      this.movie_id = params['id'];
       this.getDetails(params['id']);    
     }); 
+    this.getMovieReview(this.currentPage);
   }
 
 
@@ -39,11 +46,16 @@ console.log('data',data);
 this.movie = data
 })
 }
-getMovieReview(){
- 
-  this.MovieDetailsService.getMovieReviews(this.movie_id).subscribe((data:any)=>{
+getMovieReview(currentPage:number){
+  if(currentPage == this.totalPages)
+  return
+
+  this.MovieDetailsService.getMovieReviews(this.movie_id,currentPage).subscribe((data:any)=>{
     console.log('data',data);
-    this.movieReviews = data.results
+    let arr = [];
+    arr = data.results;
+    this.totalPages = data.total_pages; 
+    this.movieReviews.length > 0 ? this.movieReviews = this.movieReviews.concat(this.movieReviews) : this.movieReviews .push(...arr) 
     })
 }
 getSessionID(){
@@ -52,6 +64,15 @@ getSessionID(){
    this.sessionID = data.guest_session_id
   
   })
+}
+onScrollDown(ev:any) {
+  if(ev.currentScrollPosition > this.distance){
+ 
+    this.distance += this.distance;
+    this.currentPage ++
+    this.getMovieReview(this.currentPage)
+  }
+
 }
 favoriteMovie(ID:string){
 

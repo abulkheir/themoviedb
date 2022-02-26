@@ -33,7 +33,10 @@
 <div class="container">
 
     <h1 class="Reviews">Reviews</h1>
-    <div class="review_wrap" *ngFor="let review of movieReviews">
+    <div class="review_wrap" infinite-scroll
+    [infiniteScrollDistance]="scrollDistance"   
+    [infiniteScrollThrottle]="throttle"
+    (scrolled)="onScrollDown($event)" *ngFor="let review of movieReviews">
     <div class="row">
       <div class="col-md-1">
       <img class="poster" *ngIf="!review?.author_details?.avatar_path" src="../../../assets/images/Default-avatar.jpg" />
@@ -42,7 +45,7 @@
         
       </div> 
        <div class="col-md-11">
-        <h2>{{review?.author}}</h2>
+        <h2>{{review?.author}}   <i class="fa fa-star"></i> {{review?.author_details?.rating}}</h2>
         <p class="authorInfo">
           Written by {{review?.author}} on {{review?.created_at | date: 'mediumDate'}}
         </p>

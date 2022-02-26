@@ -26,9 +26,9 @@ export class MovieDetailsService {
       headers: headers
     } )    
   }
-  getMovieReviews(ID:number){
+  getMovieReviews(ID:number,currentPage:number){
     return this.http.get(`     
-    https://api.themoviedb.org/3/movie/${ID}/reviews?api_key=40a16c88cd9a1f02de6a0e045c5b1f13&language=en-US&page=1  ` 
+    https://api.themoviedb.org/3/movie/${ID}/reviews?api_key=40a16c88cd9a1f02de6a0e045c5b1f13&language=en-US&page=${currentPage}` 
    
       )        
   }
