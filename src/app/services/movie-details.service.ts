@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class MovieDetailsService {
       "Content-Type" : "application/json;charset=utf-8"
     }
     return this.http.post(`     
-    https://api.themoviedb.org/3/movie/${movie_id}/rating?api_key=40a16c88cd9a1f02de6a0e045c5b1f13&guest_session_id=${s_ID}`   
+    ${environment.apiUrl}/movie/${movie_id}/rating?api_key=${environment.apiKey}&guest_session_id=${s_ID}`   
     ,{
       "value": rating
     },
@@ -24,8 +25,15 @@ export class MovieDetailsService {
   }
   getMovieReviews(ID:number,currentPage:number){
     return this.http.get(`     
-    https://api.themoviedb.org/3/movie/${ID}/reviews?api_key=40a16c88cd9a1f02de6a0e045c5b1f13&language=en-US&page=${currentPage}` 
+    ${environment.apiUrl}/movie/${ID}/reviews?api_key=${environment.apiKey}&language=en-US&page=${currentPage}` 
    
       )        
   }
+  search(val:string){
+    return this.http.get(`     
+    ${environment.apiUrl}/search/movie?api_key=${environment.apiKey}&query=${val}` 
+   
+      )
+  }
 }
+

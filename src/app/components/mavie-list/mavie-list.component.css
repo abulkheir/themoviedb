@@ -63,6 +63,7 @@ i{
     background: rgba(3,37,65, 1);
     border-radius: 30px;
 }
-a{
+a,.pointer{
     cursor: pointer;
 }
+

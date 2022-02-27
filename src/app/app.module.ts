@@ -18,6 +18,9 @@ import { NgxStarRatingModule } from 'ngx-star-rating';
 import {MatMenuModule} from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     HttpClientModule,
     InfiniteScrollModule,
     NgxStarRatingModule,
+    AutocompleteLibModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     MatDialogModule,
     StoreModule.forRoot({movie:movieReducer})
   ],

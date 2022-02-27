@@ -1,4 +1,4 @@
-<section class="banner"  style="background-image: url(https://image.tmdb.org/t/p/original/{{movie?.backdrop_path}});">
+<section class="banner" *ngIf="movie" style="background-image: url(https://image.tmdb.org/t/p/original/{{movie?.backdrop_path}});">
   <div class="row rowGb">
     <div class="col-md-3">
       <img class="poster" src="https://image.tmdb.org/t/p/original/{{movie.poster_path}} " />

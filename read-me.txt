@@ -3,4 +3,4 @@ MatDialogModule
 
 npm i ngx-star-rating
 
-npm install ngx-pagination
+npm i ng-mat-select-infinite-scroll

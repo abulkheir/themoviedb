@@ -5,6 +5,11 @@ import { SharedService } from 'src/app/services/shared.service';
 import {MatDialog} from '@angular/material/dialog';
 import { MovieReviews } from 'src/app/models/movieReviews.model';
 import { Movie } from 'src/app/models/movie.model';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 
 
@@ -22,6 +27,8 @@ export class MavieDetailComponent implements OnInit {
   distance = 2000;
   throttle = 0;
   favArr:number[]=[];
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   favorite:boolean = false;
   totalPages:number = 0;
   private currentPage = 1;
@@ -31,7 +38,7 @@ export class MavieDetailComponent implements OnInit {
     private MovieDetailsService :MovieDetailsService,
     private router :Router,
     public dialog: MatDialog,   
-    
+    private _snackBar: MatSnackBar
     ) {
      
      }
@@ -39,6 +46,7 @@ export class MavieDetailComponent implements OnInit {
 
   ngOnInit(): void {    
     this.getSessionID();
+ 
     localStorage.getItem('favArr')? this.favArr = localStorage.getItem("favArr")?.split(",").map(num => parseInt(num, 10))!  :this.favArr  =  []
   
     this.sharedService.allData.subscribe((data)=> {
@@ -102,11 +110,15 @@ favoriteMovie(fav:boolean,ID:number){
 
 
 rateMovie(){
-
-
-  this.MovieDetailsService.rateMovie(this.movie_id,this.sessionID,this.rating).subscribe((data:any)=>{
-    
+  this.MovieDetailsService.rateMovie(this.movie_id,this.sessionID,this.rating).subscribe(()=>{
+    this.openSnackBar()
 
   })
+}
+openSnackBar() {
+  this._snackBar.open('Your Rating Has Been Served', 'OK', {
+    horizontalPosition: this.horizontalPosition,
+    verticalPosition: this.verticalPosition,
+  });
 }
 }

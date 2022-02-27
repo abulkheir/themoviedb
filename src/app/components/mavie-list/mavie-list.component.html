@@ -1,3 +1,4 @@
+<mat-spinner class="loader" [color]="'accent'" *ngIf="isLoading"></mat-spinner>
 
     <app-banenr></app-banenr>
 <section id="main" class="container"  >
@@ -18,7 +19,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-3 col-12-narrower" infinite-scroll
+      <div class="col-3 col-12-narrower pointer" infinite-scroll
       [infiniteScrollDistance]="scrollDistance"   
       [infiniteScrollThrottle]="throttle"
       (scrolled)="onScrollDown($event)"

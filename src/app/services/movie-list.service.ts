@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators'
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +10,7 @@ export class MovieListService {
   constructor(private http: HttpClient) { }
 
   getMovieList(page:number){
-    return this.http.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=40a16c88cd9a1f02de6a0e045c5b1f13&language=en-US&page=${page}`)
+    return this.http.get(`${environment.apiUrl}/movie/top_rated?api_key=${environment.apiKey}&language=en-US&page=${page}`)
     .pipe(map((data)=> data || []))
   }
 
