@@ -1,6 +1,10 @@
-angualar material
-MatDialogModule
+libararies has been used
 
-npm i ngx-star-rating
+ 1- angualar material
+ 2- MatDialogModule
+ 3- ngx-star-rating
+ 3- ng-mat-select-infinite-scroll
 
-npm i ng-mat-select-infinite-scroll
+NOTE: = 
+favorite method has been implemented in client side cause favorite api requires prior approval from the development
+ account to create session-ID which is required as a parameter in favorite api
