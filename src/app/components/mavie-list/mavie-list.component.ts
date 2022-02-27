@@ -31,9 +31,10 @@ isLoading:boolean = false;
     private store: Store<AppState>) {
     
      }
-changeToFav(val:boolean){
+changeToFav(){
   this.selected = !this.selected
-  this.movies =  this.store.pipe(select(isMovieFavorite(val)));
+  this.movies =  this.store.pipe(select(isMovieFavorite(this.selected)));
+  console.log('asdasdasd',this.movies)
 }
 
 getMovieList(currentPage:number){

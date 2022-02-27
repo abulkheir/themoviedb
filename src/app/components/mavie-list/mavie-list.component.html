@@ -7,11 +7,11 @@
         <div class="selector">
           
           <div class="anchor "[class.selected]="!selected">
-           <a (click)="changeToFav(false)" class="selectList" data-panel="popular_scroller" data-group="on-tv">All Movies </a>
+           <a (click)="changeToFav()" class="selectList">All Movies </a>
             <div class="background hide"></div>
           </div>
           <div class="anchor" [class.selected]="selected">
-         <a  (click)="changeToFav(true)" class="selectList" data-panel="popular_scroller" data-group="streaming">My Favorite Movies </a>
+         <a  (click)="changeToFav()" class="selectList">My Favorite Movies </a>
            
           </div>
         
@@ -28,7 +28,8 @@
         <section *ngIf="movie" class="box special" (click)="goToDetails(movie)">
           <span class="image featured"><img src="https://image.tmdb.org/t/p/original/{{movie?.poster_path}}" /></span>
           <h3>{{movie?.title}}</h3>    
-          <i class="fa fa-heart" [class.red]="movie.favorite == true" (click)="favItem($event,movie)"></i>      
+          <i class="fa fa-heart" [class.red]="movie.favorite == true" (click)="favItem($event,movie)"></i>  
+         
         </section>
       </div>    
     </div>
